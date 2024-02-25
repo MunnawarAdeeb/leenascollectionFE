@@ -8,6 +8,7 @@ import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProducts } from "../features/productSlice";
 import ProductPreview from "../components/ProductPreview";
+import Carasoul from "./Carasoul";
 
 function Home() {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function Home() {
     }, []);
     return (
         <div>
-            <img src=" https://res.cloudinary.com/learn-code-10/image/upload/v1653947013/yqajnhqf7usk56zkwqi5.png" className="home-banner" />
+          <Carasoul/>         {/* This is carasoul*/} 
             <div className="featured-products-container container mt-4">
                 <h2>Last products</h2>
                 {/* last products here */}
@@ -35,7 +36,7 @@ function Home() {
             </div>
             {/* sale banner */}
             <div className="sale__banner--container mt-4">
-                <img src="https://res.cloudinary.com/learn-code-10/image/upload/v1654093280/xkia6f13xxlk5xvvb5ed.png" />
+                <img src="https://res.cloudinary.com/learn-code-10/image/upload/v1654093280/xkia6f13xxlk5xvvb5ed.png" style={{width:"90%"}}/>
             </div>
             <div className="recent-products-container container mt-4">
                 <h2>Categories</h2>

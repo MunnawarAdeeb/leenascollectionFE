@@ -18,35 +18,60 @@ function CheckoutForm() {
 
     async function handlePay(e) {
         e.preventDefault();
+    
         if (!stripe || !elements || user.cart.count <= 0) return;
+    
         setPaying(true);
-        const { client_secret } = await fetch("http://localhost:8080/create-payment", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer ",
-            },
-            body: JSON.stringify({ amount: user.cart.total }),
-        }).then((res) => res.json());
-        const { paymentIntent } = await stripe.confirmCardPayment(client_secret, {
-            payment_method: {
-                card: elements.getElement(CardElement),
-            },
-        });
-        setPaying(false);
-
-        if (paymentIntent) {
-            createOrder({ userId: user._id, cart: user.cart, address, country }).then((res) => {
-                if (!isLoading && !isError) {
-                    setAlertMessage(`Payment ${paymentIntent.status}`);
-                    setTimeout(() => {
-                        // navigate("/orders");
-                    }, 3000);
-                }
+    
+        try {
+            const response = await fetch("https://localhost:8080/create-payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer ",
+                },
+                body: JSON.stringify({
+                    amount: user.cart.total,
+                    description: "Dummy transaction description", // Provide any description that suits your application
+                }),
             });
+    
+            if (!response.ok) {
+                throw new Error(`Failed to fetch payment intent: ${response.status} ${response.statusText}`);
+            }
+    
+            const { client_secret } = await response.json();
+    
+            const { paymentIntent, error } = await stripe.confirmCardPayment(client_secret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                },
+            });
+    
+            if (error) {
+                throw new Error(`Payment confirmation failed: ${error.message}`);
+            }
+    
+            setPaying(false);
+    
+            if (paymentIntent) {
+                createOrder({ userId: user._id, cart: user.cart, address, country}).then((res) => {
+                    if (!isLoading && !isError) {
+                        setAlertMessage(`Payment ${paymentIntent.status}`);
+                        setTimeout(() => {
+                            // navigate("/orders");
+                        }, 3000);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error during payment:", error.message);
+            setPaying(false);
+            setAlertMessage(`Error during payment: ${error.message}`);
         }
     }
-
+    
+    
     return (
         <Col className="cart-payment-container">
             <Form onSubmit={handlePay}>

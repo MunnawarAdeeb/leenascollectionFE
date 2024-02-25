@@ -1,0 +1,55 @@
+# Dependency directories
+node_modules/
+/client/node_modules/
+
+# Optional ESLint cache
+.eslintcache
+
+# Optional: dotenv environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug log from npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+/dist/
+/build/
+/client/build/
+
+# Temp files
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+/.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional: SQLite database files
+*.sqlite
+*.sqlite3
+
+# Optional: If you're using Docker, you might want to exclude some files
+Dockerfile
+.dockerignore
+/docker-compose.yml

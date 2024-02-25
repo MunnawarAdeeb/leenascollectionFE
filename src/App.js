@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { addNotification } from "./features/userSlice";
 
+
 function App() {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
